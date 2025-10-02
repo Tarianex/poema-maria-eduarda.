@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Maria Eduarda ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  font-family: 'Dancing Script', cursive;
+  background: #000;
+  color: #6bb3ff;
+  text-align: center;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 10px;
+}
+
+#start-btn {
+  font-size: 2.5em; /* maior e mais delicado */
+  font-family: 'Dancing Script', cursive;
+  border: 2px solid #6bb3ff;
+  background: rgba(0,0,0,0.5);
+  color: #6bb3ff;
+  padding: 20px 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(107,179,255,0.5);
+}
+#start-btn:hover {
+  background: rgba(107,179,255,0.2);
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(107,179,255,0.7);
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.show {
+  opacity: 1;
+}
+
+.frase-box {
+  background: rgba(51,153,255,0.05);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 90%;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 2s ease;
+  font-size: 1.5em; /* fonte maior para todas as frases */
+}
+
+.frase-box.show {
+  opacity: 1;
+}
+
+.frase-box.fade-out {
+  opacity: 0 !important;
+  transition: opacity 2s ease;
+}
+
+.author {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #a3d1ff;
+}
+
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: #6bb3ff;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  animation: twinkle 3s infinite;
+  z-index: -1;
+}
+
+@keyframes twinkle {
+  0%,100% {opacity:0.3;}
+  50% {opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<button id="start-btn">Clique aqui</button>
+
+<div id="frase-sequence" style="display:none; flex-direction: column; align-items:center;">
+  <div class="frase-box">
+    <div class="texto"></div>
+    <div class="author"></div>
+  </div>
+</div>
+
+<script>
+// estrelas no fundo
+function criarEstrela() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.top = Math.random() * 100 + "vh";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.animationDuration = (2 + Math.random() * 3) + "s";
+  document.body.appendChild(star);
+  setTimeout(() => star.remove(), 5000);
+}
+setInterval(criarEstrela, 200);
+
+const startBtn = document.getElementById('start-btn');
+const fraseSeq = document.getElementById('frase-sequence');
+const fraseBox = document.querySelector('.frase-box');
+const textoDiv = fraseBox.querySelector('.texto');
+const authorDiv = fraseBox.querySelector('.author');
+
+// Sequência inicial + poema
+const frases = [
+  {texto:"Para Maria Eduarda", author:''},
+  {texto:"Sob este céu infinito…", author:''},
+  {texto:"Existe algo que não cabe nas palavras, mas existe em caber no coração.", author:''},
+  {texto:`Amar antes do toque, do beijo, do sexo, é algo tão verdadeiro.\n\nVocê se apaixona pela pessoa, pela conexão,\n\nnão pelo toque físico.\n\nE assim foi com a gente,\n\nmeses antes do primeiro beijo, nas provocações,\n\ntodo pedaço que foi construído antes, até aqui.`, author:''},
+  {texto:`Só uma coisa a favor de mim eu posso dizer:\n\nnunca feri de propósito.\n\nE também me dói quando percebo que feri.\n\nMas tantos defeitos tenho:\n\nsou inquieta, ciumenta, áspera, desesperançosa.\n\nEmbora amor dentro de mim não falte.`, author:'— Clarice Lispector'},
+  {texto:`Não quero você depressa…\n\nEu quero degustar\n\nvocê aos poucos.`, author:'— Rodrigo Lopes'},
+  {texto:`Não é porque o céu está nublado\n\nque as estrelas morreram.`, author:'(Chico Buarque)'},
+  {texto:`Eu soube, desde a\n\nprimeira vez que te vi,\n\nque corria o risco de te querer.`, author:'(Mate Probst)'},
+  {texto:`Nos piores momentos,\n\nlembre-se: quem é capaz\n\nde sofrer intensamente,\n\ntambém pode ser capaz\n\nde intensa alegria.`, author:'(Clarice Lispector)'},
+  {texto:`Então…`, author:''},
+  {texto:`você aceita namorar comigo?`, author:''},
+  {texto:`Aceita estar comigo,\n\nseja na alegria ou na tristeza,\n\nna raiva ou no amor?`, author:''},
+  {texto:`Você aceita?`, author:''}
+];
+
+startBtn.addEventListener('click', () => {
+  startBtn.style.display = 'none';
+  fraseSeq.style.display = 'flex';
+  mostrarFrase(0);
+});
+
+function mostrarFrase(index){
+  if(index >= frases.length){
+    fraseBox.classList.add('fade-out');
+    setTimeout(()=>{
+      fraseSeq.style.display = 'none';
+      const encerramento = document.createElement('div');
+      encerramento.style.fontSize = '2.5em';
+      encerramento.style.color = '#6bb3ff';
+      encerramento.style.fontFamily = "'Dancing Script', cursive";
+      encerramento.style.marginTop = '30px';
+      encerramento.style.opacity = 0;
+      encerramento.textContent = "Eu te amo, Meu negocinho!";
+      document.body.appendChild(encerramento);
+      setTimeout(()=> encerramento.style.transition = "opacity 2s ease", 50);
+      setTimeout(()=> encerramento.style.opacity = 1, 100);
+    }, 500);
+    return;
+  }
+  
+  textoDiv.textContent = frases[index].texto;
+  authorDiv.textContent = frases[index].author || frases[index].autor || '';
+  fraseBox.classList.remove('fade-out');
+  fraseBox.classList.add('show');
+
+  let tempo = 6500; // um pouco mais devagar
+  if(index >=9) tempo = 8000; // pedido de namoro mais devagar
+
+  setTimeout(()=>{
+    fraseBox.classList.add('fade-out');
+    setTimeout(()=> mostrarFrase(index+1), 500);
+  }, tempo);
+}
+</script>
+
+</body>
+</html>
